@@ -1,0 +1,19 @@
+[project]
+authors = ["connorchewning <62517413+connorchewning@users.noreply.github.com>"]
+channels = ["conda-forge"]
+name = "ResultsViewer"
+platforms = ["win-64"]
+version = "0.1.0"
+
+[tasks]
+view = {cmd = "streamlit run resultsviewer.py"}
+
+[dependencies]
+python = ">=3.13.5,<3.14"
+streamlit = ">=1.46.1,<2"
+geopandas = ">=1.1.1,<2"
+pandas = ">=2.3.0,<3"
+numpy = ">=2.3.1,<3"
+folium = ">=0.20.0,<0.21"
+streamlit-folium = ">=0.25.0,<0.26"
+plotly = ">=6.2.0,<7"
