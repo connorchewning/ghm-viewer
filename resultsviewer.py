@@ -35,6 +35,24 @@ MODEL_NAME = st.selectbox(
     os.listdir(LOCAL_MODEL_DIR)
 )
 MODEL_PATH = os.path.join(LOCAL_MODEL_DIR, MODEL_NAME)
+
+REQUIRED_PATHS = {
+    'Basin shapes':             os.path.join('GHM_shapes', 'GHM_merged.shp'),
+    'Observation points':       os.path.join('setup_Router', 'Qobs.csv'),
+    'Verification statistics':  os.path.join('Results', 'Verification', 'Statistic_total.csv'),
+}
+missing = [
+    f"- **{label}**: `{rel_path}`"
+    for label, rel_path in REQUIRED_PATHS.items()
+    if not os.path.exists(os.path.join(MODEL_PATH, rel_path))
+]
+if missing:
+    st.warning(
+        "**" + MODEL_NAME + "** does not appear to be a valid Local Model — "
+        "the following required files are missing:\n\n" + "\n".join(missing)
+    )
+    st.stop()
+
 st.subheader(f"{SUB_TITLE}: {MODEL_NAME}")
 
 ### LOAD DATA
