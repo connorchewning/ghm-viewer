@@ -30,10 +30,21 @@ st.set_page_config(TAB_TITLE, layout="wide", page_icon=TAB_ICON)
 st.title(TITLE)
 
 ## Select local model
-MODEL_NAME = st.selectbox(
-    "Select Local Model",
-    os.listdir(LOCAL_MODEL_DIR)
+_readme_path = os.path.join(LOCAL_MODEL_DIR, 'README.md')
+_README_OPTION = '[ README ]'
+_model_dirs = sorted(
+    e for e in os.listdir(LOCAL_MODEL_DIR)
+    if os.path.isdir(os.path.join(LOCAL_MODEL_DIR, e))
 )
+_options = ([_README_OPTION] + _model_dirs) if os.path.exists(_readme_path) else _model_dirs
+
+MODEL_NAME = st.selectbox("Select Local Model", _options)
+
+if MODEL_NAME == _README_OPTION:
+    with open(_readme_path, 'r') as _f:
+        st.markdown(_f.read())
+    st.stop()
+
 MODEL_PATH = os.path.join(LOCAL_MODEL_DIR, MODEL_NAME)
 
 REQUIRED_PATHS = {
