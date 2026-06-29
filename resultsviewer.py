@@ -41,7 +41,7 @@ _options = ([_README_OPTION] + _model_dirs) if os.path.exists(_readme_path) else
 MODEL_NAME = st.selectbox("Select Local Model", _options)
 
 if MODEL_NAME == _README_OPTION:
-    with open(_readme_path, 'r') as _f:
+    with open(_readme_path, 'r', encoding='utf-8-sig') as _f:
         st.markdown(_f.read())
     st.stop()
 
