@@ -18,10 +18,11 @@ TITLE = "Global Hydrological Model Results Viewer"
 TAB_TITLE = "GHM Results Viewer"
 TAB_ICON = ":earth_africa:"
 SUB_TITLE = "Simulation results"
+LOCAL_MODEL_DIR = r"Z:\GHM\GlobalHydro\LocalModel"
 if len(sys.argv) > 1:
     LOCAL_MODEL_DIR = sys.argv[1]
-else:
-    LOCAL_MODEL_DIR = r"Z:\GHM\GlobalHydro\LocalModel"
+
+    
 
 
 ### HEADER
