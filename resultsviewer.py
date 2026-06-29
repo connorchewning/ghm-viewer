@@ -50,16 +50,31 @@ verification_stats = utils.load_verification_statistics(MODEL_PATH)
 with st.expander('Verification statistics'):
     st.write(verification_stats)
 
+station_list = list(qobs.station.values)
+
+if 'selected_station' not in st.session_state:
+    st.session_state.selected_station = station_list[0]
+if 'last_map_click' not in st.session_state:
+    st.session_state.last_map_click = None
+
 col1, col2, col3 = st.columns(spec=[0.33, 0.33, 0.33])
 
 display_station = st.selectbox(
     "Select station to plot",
-    qobs.station.values
+    station_list,
+    index=station_list.index(st.session_state.selected_station),
 )
+st.session_state.selected_station = display_station
 
 with col1:
     st.caption('Map of available discharge stations')
     map_data = utils.display_folium(basins, qobs, [display_station])
+
+    clicked = (map_data or {}).get('last_object_clicked_popup')
+    if clicked and clicked != st.session_state.last_map_click and clicked in station_list:
+        st.session_state.last_map_click = clicked
+        st.session_state.selected_station = clicked
+        st.rerun()
 
 with col2:
     criteria_map = {
