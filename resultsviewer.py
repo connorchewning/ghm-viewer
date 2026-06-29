@@ -111,10 +111,24 @@ with col3:
 
 ### load the verification timeseries data for the station
 station_file_name = qobs.loc[qobs.station == display_station, 'grdc_no'].values[0]
-station_timeseries= utils.load_station_timeseries(MODEL_PATH, station_file_name)
+station_timeseries = utils.load_station_timeseries(MODEL_PATH, station_file_name)
+
+date_range = st.date_input(
+    "Date range",
+    value=(station_timeseries['Date'].min(), station_timeseries['Date'].max()),
+    min_value=station_timeseries['Date'].min(),
+    max_value=station_timeseries['Date'].max(),
+)
+
+if len(date_range) == 2:
+    start_date, end_date = date_range
+    mask = (station_timeseries['Date'] >= str(start_date)) & (station_timeseries['Date'] <= str(end_date))
+    ts = station_timeseries.loc[mask]
+else:
+    ts = station_timeseries
 
 # Plot timeseries
-st.line_chart(station_timeseries, x='Date', y=['Qsim', 'Qobs'])
-st.line_chart(station_timeseries, x='Date', y=['QsimAcc', 'QobsAcc'])
-yselections = st.multiselect('Select what to plot on y axis', station_timeseries.columns, default=['Qobs', 'Qsim'])
-st.line_chart(station_timeseries, x='Date', y=yselections)
+st.line_chart(ts, x='Date', y=['Qsim', 'Qobs'])
+st.line_chart(ts, x='Date', y=['QsimAcc', 'QobsAcc'])
+yselections = st.multiselect('Select what to plot on y axis', ts.columns, default=['Qobs', 'Qsim'])
+st.line_chart(ts, x='Date', y=yselections)
